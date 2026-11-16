@@ -2,7 +2,7 @@
 
 > Núm. cuenta - Delgado Flores Jesús Giovani
 
-> Núm. cuenta - Luna Gutierrez Sayuri
+> 323134745 - Luna Gutierrez Sayuri
 
 > 323023834 - Medina Alonso Patrick
 
