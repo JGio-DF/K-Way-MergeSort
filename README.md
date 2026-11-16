@@ -1,6 +1,6 @@
 # External Merge Sort
 
-> Núm. cuenta - Delgado Flores Jesús Giovani
+> 323063609 - Delgado Flores Jesús Giovani
 
 > 323134745 - Luna Gutierrez Sayuri
 
@@ -89,9 +89,21 @@ El tamaño de los chunks también influye en el rendimiento: los fragmentos más
 ---
 ## Conclusiones
 
+A través de esta investigación y del desarrollo del proyecto, logramos comprender la importancia del External Merge Sort como una alternativa para organizar grandes cantidades de información cuando estas superan la capacidad disponible de la memoria RAM.
 
+Durante el estudio del algoritmo identificamos sus dos etapas principales, comprendimos la función del Min-Heap como una herramienta que facilita la selección del menor elemento de cada fragmento, permitiendo construir un archivo final ordenado de manera eficiente.
+
+La implementación en Python nos permitió llevar los conceptos teóricos a la práctica, observar cómo se administran los archivos temporales y comprender la importancia de utilizar adecuadamente la memoria y el almacenamiento durante el procesamiento de los datos. Del mismo modo, reconocimos que el tamaño de los fragmentos influye en la cantidad de archivos temporales generados y en el rendimiento general del algoritmo.
+
+Finalmente, este proyecto nos permitió reforzar nuestros conocimientos sobre algoritmos de ordenamiento, estructuras de datos y manejo de archivos, además de desarrollar habilidades de investigación, programación y trabajo en equipo. Concluimos que el Ordenamiento Externo es una solución útil para el procesamiento de grandes volúmenes de información y que conocer su funcionamiento nos ayuda a comprender cómo se resuelven problemas computacionales cuando los recursos disponibles son limitados.
 
 ---
 ## Referencias
 
-- Ola
+- External sorting — Wikipedia — Aportó los fundamentos del ordenamiento externo, su necesidad cuando los datos no caben en memoria principal y el funcionamiento general de sus fases. https://en.wikipedia.org/wiki/External_sorting
+- File Handling in Python — GeeksforGeeks — Aportó información sobre la apertura, lectura, escritura y cierre de archivos en Python, necesaria para trabajar con archivos de entrada, temporales y de salida. https://www.geeksforgeeks.org/python/file-handling-python/
+- K-way merge algorithm — Wikipedia — Aportó información sobre la mezcla de múltiples secuencias ordenadas y las estrategias utilizadas para realizarla, incluyendo el uso de heaps. https://en.wikipedia.org/wiki/K-way_merge_algorithm
+- chunk — Documentación oficial de Python 3.8 — Se consultó como referencia sobre el concepto de fragmentos (chunks) en archivos. https://docs.python.org/es/3.8/library/chunk.html
+- Merge Sort — GeeksforGeeks — Aportó los fundamentos del algoritmo Merge Sort, su estrategia de dividir y combinar y su aplicación para ordenar los fragmentos en memoria. https://www.geeksforgeeks.org/dsa/merge-sort/
+- K-way Merge: A Comprehensive Guide to Merging Sorted Arrays — AlgoCademy — Aportó una explicación complementaria del K-way Merge, sus aplicaciones, implementación y análisis de complejidad temporal y espacial. https://algocademy.com/blog/k-way-merge-a-comprehensive-guide-to-merging-sorted-arrays/
+- External Merge Sort — GitHub — Se tomó como referencia complementaria para consultar un proyecto de implementación del algoritmo External Merge Sort en Python. https://github.com/melvilgit/external-Merge-Sort
