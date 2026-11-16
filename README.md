@@ -32,12 +32,14 @@ A diferencia de los algoritmos de ordenamiento interno, que trabajan principalme
 
 Su funcionamiento se divide principalmente en dos fases:
 
+
 **Fase 1. Generación de runs (fragmentos ordenados)**
 
 1. Se lee una parte del archivo original, denominada chunk, cuyo tamaño debe ajustarse a la memoria disponible.
 2. El fragmento se ordena en memoria utilizando un algoritmo de ordenamiento interno, como Merge Sort.
 3. El bloque ordenado se guarda en disco como un archivo temporal denominado run.
 4. El procedimiento se repite hasta procesar todos los datos del archivo original.
+
 
 **Fase 2. Mezcla de runs (Merge)**
 
