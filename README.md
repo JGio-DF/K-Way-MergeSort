@@ -65,13 +65,12 @@ El procedimiento consiste en:
 | Buffer | Espacio temporal de memoria utilizado para facilitar la lectura y escritura de datos |
 
 
-**Complejidad y rendimiento**
+### Complejidad y rendimiento
 
 Durante la fase de mezcla, cada uno de los N elementos se procesa mediante operaciones de extracción e inserción en un Min-Heap de tamaño K.
 
-Tiempo de mezcla: O(N log K).
-
-Espacio del Min-Heap: O(K).
+**Tiempo de mezcla: O(N log K).**
+**Espacio del Min-Heap: O(K).**
 
 El tamaño de los chunks también influye en el rendimiento: los fragmentos más grandes generan menos runs y, por lo general, reducen el trabajo de mezcla. Sin embargo, deben respetar la memoria disponible para el procesamiento y los buffers. Además, el acceso secuencial al disco es importante para reducir operaciones de búsqueda y mejorar la eficiencia de lectura y escritura.
 
