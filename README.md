@@ -137,7 +137,55 @@ flowchart TD
     N -- "No" --> O["Limpieza: cerrar y borrar los runs temporales"]
     O --> P["Fin: 'sorted_output.txt' ordenado de 5 GB<br/>sin haber cargado nunca los 5 GB en memoria"]
 ```
+```mermaid
+flowchart TD
+    A["Inicio: split_files('largefile', chunk_size = 20)<br/>(≙ chunks de 1 GB sobre un archivo de 5 GB)"] --> B["os.makedirs(temp_dir, exist_ok=True)"]
+    B --> C{"os.path.exists(large_file_name)?"}
+    C -- "No" --> D["raise FileNotFoundError"]
+    C -- "Sí" --> E["abre largefile para lectura<br/>temp_buffer = []"]
+    E --> F{"for line in large_file<br/>¿quedan líneas?"}
+    F -- "siguiente línea" --> G["clean_line = line.strip()"]
+    G --> H{"clean_line está vacía?"}
+    H -- "Sí" --> F
+    H -- "No" --> I["temp_buffer.append(int(clean_line))"]
+    I --> J{"len(temp_buffer) == chunk_size?<br/>(chunk lleno: 20 números)"}
+    J -- "No" --> F
+    J -- "Sí" --> K["self._save_run(temp_buffer)<br/>temp_buffer = [] (libera memoria)"]
+    K --> F
+    F -- "archivo agotado" --> L{"temp_buffer tiene elementos?<br/>(último chunk incompleto)"}
+    L -- "Sí" --> M["self._save_run(temp_buffer)"]
+    L -- "No (con 100 números y chunk 20,<br/>no sobra ninguno)" --> N["Fin: 5 runs generados"]
+    M --> N
+```
 
+```mermaid
+flowchart TD
+    A["Inicio: merge_sorted_temp_files('sorted_output.txt')"] --> B["heap_list = []"]
+    B --> C{"for handler in sorted_temp_handlers<br/>¿quedan runs por leer? (k = 5)"}
+    C -- "siguiente run" --> D["line = handler.readline().strip()<br/>(primer elemento del run)"]
+    D --> E{"line no está vacía?"}
+    E -- "Sí" --> F["heap_list.append(HeapNode(int(line), handler))"]
+    E -- "No" --> C
+    F --> C
+    C -- "todos leídos" --> G{"heap_list está vacío?"}
+    G -- "Sí" --> H["crea archivo de salida vacío<br/>return 0"]
+    G -- "No" --> I["construct_heap(heap_list)<br/>(min-heap con k = 5 nodos, uno por run)"]
+    I --> J["total_written = 0<br/>abre output_file para escritura"]
+    J --> K["min_node = heap_list[0]<br/>(el menor de los primeros elementos)"]
+    K --> L{"min_node.item == sys.maxsize?<br/>(¿todos los runs agotados?)"}
+    L -- "Sí" --> M["sale del while"]
+    L -- "No" --> N["out_file.write(min_node.item)<br/>total_written += 1"]
+    N --> O["handler = min_node.file_handler<br/>next_line = handler.readline().strip()"]
+    O --> P{"next_line no está vacía?"}
+    P -- "Sí" --> Q["next_item = int(next_line)"]
+    P -- "No" --> R["next_item = sys.maxsize<br/>(centinela: run agotado)"]
+    Q --> S["heap_list[0] = HeapNode(next_item, handler)"]
+    R --> S
+    S --> T["heapify(heap_list, 0, len(heap_list))<br/>(restaura el min-heap)"]
+    T --> K
+    M --> U["self._cleanup()"]
+    U --> V["return total_written"]
+```
 
 ---
 ## Conclusiones
