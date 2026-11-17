@@ -1,17 +1,11 @@
 from random import randint
 
-# Este programa crea un archivo llamado "largefile" con 100 números aleatorios, el programa principal divide esos 100 números en bloques de 10 : )
-
 N = 1000
-f = open("largefile", "w")
-k = 0
+total_numeros = 100  # Cámbialo a 0 (vacío), 105 (no múltiplo), 100000 (prueba grande), etc.
 
-while True:
-    n = randint(0, N)
-    f.write(str(n) + "\n")
-    k = k + 1
-    if k == 100:
-        f.close()
-        break
+with open("largefile", "w", encoding="utf-8") as f:
+    for _ in range(total_numeros):
+        n = randint(0, N)
+        f.write(f"{n}\n")
 
-print("Archivo creado! :)")
+print(f"Archivo 'largefile' creado con {total_numeros} elementos! :)")
