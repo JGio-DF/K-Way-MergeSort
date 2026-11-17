@@ -80,6 +80,33 @@ El tamaño de los chunks también influye en el rendimiento: los fragmentos más
 ---
 ## Demo
 
+### Clase `HeapNode`
+
+#### `__init__(self, item, file_handler)`
+- Define la unidad básica que almacena el Min-Heap. Cada nodo encapsula dos datos: el valor numérico actual (`item`) y la referencia al archivo temporal abierto (`file_handler`) de donde se extrajo ese número. Esto permite saber exactamente de qué run debe leerse el siguiente dato cuando este elemento salga del montículo.
+
+### Clase `ExternalMergeSort`
+
+#### `__init__(self)`
+- Inicializa el entorno de trabajo del algoritmo. Crea la lista `sorted_temp_handlers` para rastrear todos los archivos temporales abiertos y define la ruta del directorio local `temp` donde se alojarán los runs intermedios.
+
+#### `heapify(self, arr, i, n)`
+- Restaura la propiedad de Min-Heap (donde el padre siempre es menor o igual a sus hijos) a partir de un nodo dado en el índice `i`. Compara el elemento actual con sus hijos izquierdo (`2i + 1`) y derecho (`2i + 2`) dentro de un límite n, intercambiando posiciones con el menor y propagando el ajuste recursivamente hacia abajo en tiempo O(log k).
+
+#### `construct_heap(self, arr)`
+- Construye un Min-Heap válido desde cero a partir de un arreglo desordenado de nodos. Recorre los nodos internos de abajo hacia arriba (desde el último nodo padre hasta la raíz) aplicando `heapify` en cada nivel en tiempo lineal O(k).
+
+#### `_save_run(self, buffer)`
+- Toma un bloque de datos (`buffer`) cargado en memoria RAM, lo ordena internamente mediante `sort()` y lo persiste en disco como un archivo temporal independiente (run). Posteriormente, reposiciona el puntero de lectura al inicio del archivo (`seek(0)`) y registra su manejador para la fase de mezcla.
+
+#### `split_files(self, large_file_name, chunk_size)`
+- Ejecuta la Fase 1 (Generación de runs). Lee el archivo masivo línea por línea sin cargarlo completo en memoria, acumulando registros hasta alcanzar el límite `chunk_size`. Cada vez que el buffer se llena (y al final del archivo si queda un bloque residual), invoca a `_save_run` para crear un nuevo run ordenado en disco.
+
+#### `merge_sorted_temp_files(self, output_file_name)`
+- Ejecuta la Fase 2 (Mezcla de k vías). Extrae el primer elemento de cada archivo temporal para inicializar el Min-Heap de tamaño k. En un ciclo continuo, extrae la raíz del montículo (el menor elemento global), la escribe directamente en el archivo de salida en disco y repone esa posición leyendo el siguiente valor del mismo run (o `sys.maxsize` si ese archivo ya se agotó), reajustando el heap hasta procesar todos los datos. 
+
+#### `_cleanup(self)`
+- Libera los recursos del sistema al finalizar la mezcla. Cierra cada uno de los descriptores de archivos temporales abiertos, elimina los archivos residuales del directorio `temp` en disco y vacía la lista interna de referencias.
 
 ---
 ## Análisis de resultados
