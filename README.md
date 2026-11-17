@@ -6,7 +6,7 @@
 
 > 323023834 - Medina Alonso Patrick
 
-> Núm. cuenta - Riveroll Hernández Alexis Eduardo
+> 323068192 - Riveroll Hernández Alexis Eduardo
 
 
 ---
