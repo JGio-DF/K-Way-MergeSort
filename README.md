@@ -78,7 +78,7 @@ Durante la fase de mezcla, cada uno de los N elementos se procesa mediante opera
 El tamaño de los chunks también influye en el rendimiento: los fragmentos más grandes generan menos runs y, por lo general, reducen el trabajo de mezcla. Sin embargo, deben respetar la memoria disponible para el procesamiento y los buffers. Además, el acceso secuencial al disco es importante para reducir operaciones de búsqueda y mejorar la eficiencia de lectura y escritura.
 
 ---
-## Demo
+## DEMO
 
 ### Clase `HeapNode`
 
