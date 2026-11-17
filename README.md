@@ -110,7 +110,33 @@ El tamaño de los chunks también influye en el rendimiento: los fragmentos más
 
 ---
 ## Análisis de resultados
+```mermaid
+flowchart TD
+    A["Archivo 'largefile' de 5 GB en disco<br/>RAM disponible: 1 GB"] --> B["Fase 1: split_files<br/>(generación de runs)"]
 
+    subgraph F1["Fase 1 (repetida para cada chunk)"]
+        C["Leer del archivo un chunk que quepa en 1 GB<br/>(chunk_size números)"] --> D["Ordenar el chunk en memoria<br/>buffer.sort()"]
+        D --> E["Escribir el chunk ordenado en un archivo temporal<br/>(un 'run')"]
+        E --> G["Liberar el chunk de memoria"]
+        G --> H{"¿quedan datos<br/>por leer?"}
+        H -- "Sí" --> C
+    end
+
+    B --> C
+    H -- "No" --> I["Resultado: k runs ordenados en disco<br/>k = ⌈5 GB / tamaño del chunk⌉ ≥ 5"]
+    I --> J["Fase 2: merge_sorted_temp_files<br/>(mezcla k-way)"]
+
+    subgraph F2["Fase 2 (repetida hasta agotar los runs)"]
+        K["Min-heap en RAM con UN elemento por run<br/>(k nodos, memoria mínima)"] --> L["Extraer el menor del heap<br/>y escribirlo en el archivo de salida"]
+        L --> M["Leer el siguiente elemento del run de donde salió<br/>y reinsertarlo en el heap"]
+        M --> N{"¿quedan elementos<br/>en algún run?"}
+        N -- "Sí" --> L
+    end
+
+    J --> K
+    N -- "No" --> O["Limpieza: cerrar y borrar los runs temporales"]
+    O --> P["Fin: 'sorted_output.txt' ordenado de 5 GB<br/>sin haber cargado nunca los 5 GB en memoria"]
+```
 
 
 ---
