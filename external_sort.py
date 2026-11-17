@@ -37,10 +37,10 @@ class ExternalMergeSort:
     def construct_heap(self, arr):
         n = len(arr)
         for mid in range(n // 2 - 1, -1, -1):
-            self.heapify(arr, mid, n)  # Corrección: pasar n completo, no n - 1
+            self.heapify(arr, mid, n)
 
     def _save_run(self, buffer):
-        buffer.sort()  # Ordena enteros directamente en RAM
+        buffer.sort()
         temp_file = tempfile.NamedTemporaryFile(
             mode='w+', dir=self.temp_dir, delete=False, encoding='utf-8'
         )
@@ -57,7 +57,7 @@ class ExternalMergeSort:
             temp_buffer = []
             for line in large_file:
                 clean_line = line.strip()
-                if not clean_line:  # Ignora líneas vacías
+                if not clean_line:
                     continue
                 temp_buffer.append(int(clean_line))
 
@@ -65,7 +65,6 @@ class ExternalMergeSort:
                     self._save_run(temp_buffer)
                     temp_buffer = []
 
-            # Corrección: guardar el bloque residual si N no es múltiplo de chunk_size
             if temp_buffer:
                 self._save_run(temp_buffer)
 
@@ -77,7 +76,6 @@ class ExternalMergeSort:
             if line:
                 heap_list.append(HeapNode(int(line), handler))
 
-        # Corrección: manejo de archivo vacío
         if not heap_list:
             open(output_file_name, 'w', encoding='utf-8').close()
             return 0
@@ -85,7 +83,6 @@ class ExternalMergeSort:
         self.construct_heap(heap_list)
         total_written = 0
 
-        # Escribe directo a disco en lugar de acumular en RAM
         with open(output_file_name, 'w', encoding='utf-8') as out_file:
             while True:
                 min_node = heap_list[0]
@@ -117,7 +114,7 @@ class ExternalMergeSort:
 if __name__ == '__main__':
     large_file = 'largefile'
     output_file = 'sorted_output.txt'
-    chunk_size = 10  # Puedes variar esto (ej. 10, 100, 1000) para comparar tiempos
+    chunk_size = 10  
 
     inicio = time.perf_counter()
     sorter = ExternalMergeSort()
